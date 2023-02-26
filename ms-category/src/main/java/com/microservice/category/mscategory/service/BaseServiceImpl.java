@@ -131,15 +131,19 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
     @Transactional
     public E update(ID id, E entity) throws Exception {
         try {
-            Optional <E> entityOptional = baseRepository.findById(id);
-            E account = entityOptional.get();
-
-            account = baseRepository.save(entity);
-            return account;
-        }catch (Exception e){
+            Optional<E> entityOptional = baseRepository.findById(id);
+            if (entityOptional.isPresent()) {
+                Long categoryId = entityOptional.get().getId();
+                entityOptional = Optional.of(entity);
+                entityOptional.get().setId(categoryId);
+                return baseRepository.save(entityOptional.get());
+            }
+            return null;
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
+
 
 
 
