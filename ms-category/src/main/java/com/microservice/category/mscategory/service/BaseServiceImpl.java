@@ -54,36 +54,36 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
      * @throws DataIntegrityViolationException si ya existe una entidad con los mismos datos en la base de datos.
      * @throws Exception si ocurre un error al guardar la entidad.
      */
-    @Override
-    public E save(E entity) throws Exception {
-        try {
-            if (entity instanceof Category category) {
-                Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
-                if (categoryDB != null) {
-                    throw new DataIntegrityViolationException("La categoria ya existe");
-                }
-            }
-            return baseRepository.save(entity);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException(e.getMessage());
-
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
-
-    /**
-     * OBSERVACION: PARA TESTING CON JMETER UTILIZAR ESTE METODO
-     */
 //    @Override
 //    public E save(E entity) throws Exception {
 //        try {
+//            if (entity instanceof Category category) {
+//                Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
+//                if (categoryDB != null) {
+//                    throw new DataIntegrityViolationException("La categoria ya existe");
+//                }
+//            }
 //            return baseRepository.save(entity);
+//
+//        } catch (DataIntegrityViolationException e) {
+//            throw new DataIntegrityViolationException(e.getMessage());
+//
 //        } catch (Exception e) {
 //            throw new Exception(e.getMessage());
 //        }
 //    }
+
+    /**
+     * OBSERVACION: PARA TESTING CON JMETER UTILIZAR ESTE METODO
+     */
+    @Override
+    public E save(E entity) throws Exception {
+        try {
+            return baseRepository.save(entity);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 
 
     /**
@@ -96,50 +96,50 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
      * @throws DataIntegrityViolationException si ya existe una entidad con los mismos datos en la base de datos.
      * @throws Exception si ocurre un error durante la actualización de la entidad o si ya existe otra entidad con los mismos datos en la base de datos
      */
-    @Override
-    @Transactional
-    public E update(ID id, E entity) throws Exception {
-        try {
-            Optional<E> entityOptional = baseRepository.findById(id);
-            if (entityOptional.isPresent()) {
-                E entityToUpdate = entityOptional.get();
-                if (entityToUpdate instanceof Category categoryToUpdate && entity instanceof Category category) {
-                    Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
-                    if (categoryDB != null && !categoryDB.getId().equals(categoryToUpdate.getId())) {
-                        throw new DataIntegrityViolationException("La categoría ya existe");
-                    }
-                }
-
-                Long categoryId = entityToUpdate.getId();
-                entity.setId(categoryId);
-                return baseRepository.save(entity);
-            }
-            return null;
-
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException(e.getMessage());
-
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }
-
-    /**
-     * OBSERVACION: PARA TESTING CON JMETER UTILIZAR ESTE METODO
-     */
 //    @Override
 //    @Transactional
 //    public E update(ID id, E entity) throws Exception {
 //        try {
-//            Optional <E> entityOptional = baseRepository.findById(id);
-//            E account = entityOptional.get();
+//            Optional<E> entityOptional = baseRepository.findById(id);
+//            if (entityOptional.isPresent()) {
+//                E entityToUpdate = entityOptional.get();
+//                if (entityToUpdate instanceof Category categoryToUpdate && entity instanceof Category category) {
+//                    Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
+//                    if (categoryDB != null && !categoryDB.getId().equals(categoryToUpdate.getId())) {
+//                        throw new DataIntegrityViolationException("La categoría ya existe");
+//                    }
+//                }
 //
-//            account = baseRepository.save(entity);
-//            return account;
-//        }catch (Exception e){
+//                Long categoryId = entityToUpdate.getId();
+//                entity.setId(categoryId);
+//                return baseRepository.save(entity);
+//            }
+//            return null;
+//
+//        } catch (DataIntegrityViolationException e) {
+//            throw new DataIntegrityViolationException(e.getMessage());
+//
+//        } catch (Exception e) {
 //            throw new Exception(e.getMessage());
 //        }
 //    }
+
+    /**
+     * OBSERVACION: PARA TESTING CON JMETER UTILIZAR ESTE METODO
+     */
+    @Override
+    @Transactional
+    public E update(ID id, E entity) throws Exception {
+        try {
+            Optional <E> entityOptional = baseRepository.findById(id);
+            E account = entityOptional.get();
+
+            account = baseRepository.save(entity);
+            return account;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
 
 
