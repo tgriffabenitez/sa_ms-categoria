@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.io.Serializable;
 
 public interface BaseController <E extends Base, ID extends Serializable> {
-    ResponseEntity<?> getAllPageable(Pageable pageable);
+    ResponseEntity<?> getAll();
     ResponseEntity<?> getById(@PathVariable ID id);
     ResponseEntity<?> save(@RequestBody E entity);
     ResponseEntity<?> update(@PathVariable ID id, @RequestBody E entity);
