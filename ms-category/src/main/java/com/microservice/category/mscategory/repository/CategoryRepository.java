@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends BaseRepository<Category, Long> {
 
-    Category findByCategory(String category);
+    Category findByCategoria(String category);
 }

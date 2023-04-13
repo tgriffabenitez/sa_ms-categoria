@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> implements BaseService<E, ID> {
@@ -26,9 +27,9 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
     }
 
     @Override
-    public Page<E> findAllPageable(Pageable pageable) throws Exception {
+    public List<E> findAll() throws Exception {
         try {
-            return baseRepository.findAll(pageable);
+            return baseRepository.findAll();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -58,7 +59,7 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
     public E save(E entity) throws Exception {
         try {
             if (entity instanceof Category category) {
-                Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
+                Category categoryDB = CategoryRepository.findByCategoria(category.getCategoria());
                 if (categoryDB != null) {
                     throw new DataIntegrityViolationException("La categoria ya existe");
                 }
@@ -104,7 +105,7 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
             if (entityOptional.isPresent()) {
                 E entityToUpdate = entityOptional.get();
                 if (entityToUpdate instanceof Category categoryToUpdate && entity instanceof Category category) {
-                    Category categoryDB = CategoryRepository.findByCategory(category.getCategory());
+                    Category categoryDB = CategoryRepository.findByCategoria(category.getCategoria());
                     if (categoryDB != null && !categoryDB.getId().equals(categoryToUpdate.getId())) {
                         throw new DataIntegrityViolationException("La categoría ya existe");
                     }

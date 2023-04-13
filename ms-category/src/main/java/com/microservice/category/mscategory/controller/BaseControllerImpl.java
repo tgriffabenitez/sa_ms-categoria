@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceImpl<E, Long>> implements BaseController<E, Long> {
     @Autowired
@@ -38,22 +39,17 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class))
             }),
     })
-    @GetMapping("/categories")
-    public ResponseEntity<?> getAllPageable(Pageable pageable) {
+    @GetMapping("/categorias")
+    public ResponseEntity<?> getAll( ) {
         try {
-            Page<E> entity = service.findAllPageable(pageable);
+            List<E> entity = service.findAll();
             if (entity.isEmpty())
-                throw new EntityNotFoundException("No se encontraron categorias");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-            return ResponseEntity.status(HttpStatus.OK).body(entity);
-
-        } catch (EntityNotFoundException ex) {
-            ErrorDetail errorDetail = new ErrorDetail(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "Not Found", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetail);
+            return new ResponseEntity<>(entity, HttpStatus.OK);
 
         } catch (Exception ex) {
-            ErrorDetail errorDetail = new ErrorDetail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), "Internal Server Error", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetail);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -72,28 +68,22 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class))
             }),
     })
-    @GetMapping("/categories/{id}")
+    @GetMapping("/categoria/{id}")
     public ResponseEntity<?> getById(@PathVariable @Valid Long id) {
         try {
             if (id == null || id <= 0)
                 throw new IllegalArgumentException("El id ingresado no es valido");
 
             if (service.findById(id) == null)
-                throw new EntityNotFoundException("No se encontro la categoria con el id: " + id);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
 
-        } catch (EntityNotFoundException ex) {
-            ErrorDetail errorDetail = new ErrorDetail(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "Not Found", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetail);
-
         } catch (IllegalArgumentException ex) {
-            ErrorDetail errorDetail = new ErrorDetail(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), "Bad Request", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetail);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 
         } catch (Exception ex) {
-            ErrorDetail errorDetail = new ErrorDetail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), "Internal Server Error", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDetail);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -112,7 +102,7 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class))
             }),
     })
-    @PostMapping("/categories")
+    @PostMapping("/categorias")
     public ResponseEntity<?> save(@RequestBody @Valid E entity) {
         try {
             if (entity == null)
@@ -152,7 +142,7 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class))
             }),
     })
-    @PutMapping("/categories/{id}")
+    @PutMapping("/categoria/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid E entity) {
         try {
             if (id == null || id <= 0)
@@ -197,7 +187,7 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetail.class))
             }),
     })
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/categoria/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             if (id == null || id <= 0) {

@@ -18,6 +18,6 @@ import lombok.Setter;
 public class Category extends Base {
 
     @NotBlank
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "categoria", nullable = false)
+    private String categoria;
 }
