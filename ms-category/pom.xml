@@ -59,6 +59,12 @@
             <version>2.0.2</version>
         </dependency>
 
+        <!-- Basic Auth -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
