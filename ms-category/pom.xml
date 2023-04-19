@@ -8,11 +8,11 @@
         <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.microservice.category</groupId>
-    <artifactId>ms-category</artifactId>
+    <groupId>com.microservice.categoria</groupId>
+    <artifactId>ms-categoria</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ms-category</name>
-    <description>ms-category</description>
+    <name>ms-categoria</name>
+    <description>ms-categoria</description>
     <properties>
         <java.version>17</java.version>
     </properties>

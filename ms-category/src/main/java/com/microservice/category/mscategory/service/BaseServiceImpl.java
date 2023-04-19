@@ -1,14 +1,12 @@
 package com.microservice.category.mscategory.service;
 
 import com.microservice.category.mscategory.model.Base;
-import com.microservice.category.mscategory.model.Category;
+import com.microservice.category.mscategory.model.Categoria;
 import com.microservice.category.mscategory.repository.BaseRepository;
-import com.microservice.category.mscategory.repository.CategoryRepository;
+import com.microservice.category.mscategory.repository.CategoriaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 
@@ -18,7 +16,7 @@ import java.util.Optional;
 public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> implements BaseService<E, ID> {
 
     @Autowired
-    private CategoryRepository CategoryRepository;
+    private CategoriaRepository CategoriaRepository;
 
     protected BaseRepository<E, ID> baseRepository;
 
@@ -58,9 +56,9 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
     @Override
     public E save(E entity) throws Exception {
         try {
-            if (entity instanceof Category category) {
-                Category categoryDB = CategoryRepository.findByCategoria(category.getCategoria());
-                if (categoryDB != null) {
+            if (entity instanceof Categoria categoria) {
+                Categoria categoriaDB = CategoriaRepository.findByCategoria(categoria.getCategoria());
+                if (categoriaDB != null) {
                     throw new DataIntegrityViolationException("La categoria ya existe");
                 }
             }
@@ -104,9 +102,9 @@ public abstract class BaseServiceImpl <E extends Base, ID extends Serializable> 
             Optional<E> entityOptional = baseRepository.findById(id);
             if (entityOptional.isPresent()) {
                 E entityToUpdate = entityOptional.get();
-                if (entityToUpdate instanceof Category categoryToUpdate && entity instanceof Category category) {
-                    Category categoryDB = CategoryRepository.findByCategoria(category.getCategoria());
-                    if (categoryDB != null && !categoryDB.getId().equals(categoryToUpdate.getId())) {
+                if (entityToUpdate instanceof Categoria categoriaToUpdate && entity instanceof Categoria categoria) {
+                    Categoria categoriaDB = CategoriaRepository.findByCategoria(categoria.getCategoria());
+                    if (categoriaDB != null && !categoriaDB.getId().equals(categoriaToUpdate.getId())) {
                         throw new DataIntegrityViolationException("La categoría ya existe");
                     }
                 }

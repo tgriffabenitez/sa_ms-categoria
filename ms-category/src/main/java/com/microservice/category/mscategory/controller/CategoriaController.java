@@ -1,7 +1,7 @@
 package com.microservice.category.mscategory.controller;
 
-import com.microservice.category.mscategory.model.Category;
-import com.microservice.category.mscategory.service.CategoryServiceImpl;
+import com.microservice.category.mscategory.model.Categoria;
+import com.microservice.category.mscategory.service.CategoriaServiceImpl;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -24,6 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "api/v1")
-public class RepositoryController extends BaseControllerImpl<Category, CategoryServiceImpl> {
+public class CategoriaController extends BaseControllerImpl<Categoria, CategoriaServiceImpl> {
 
 }

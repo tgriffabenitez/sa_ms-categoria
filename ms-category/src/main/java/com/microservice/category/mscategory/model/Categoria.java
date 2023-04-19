@@ -14,8 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="category")
-public class Category extends Base {
+@Table(name="categoria")
+public class Categoria extends Base {
 
     @NotBlank
     @Column(name = "categoria", nullable = false)
